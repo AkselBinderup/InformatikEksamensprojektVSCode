@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="da">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kontakt</title>
+
+   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/css/bootstrap.min.css"
+   integrity="sha384-r4NyP46KrjDleawBgD5tp8Y7UzmLA05oM1iAEQ17CSuDqnUK2+k9luXQOfXJCJ4I" crossorigin="anonymous">
+
+ <!-- Custom Stylesheets -->
+ <!-- <link rel="stylesheet" href="../css/stylesheet.css"> -->
+ <link rel="stylesheet" href="../css/bookingstyle.css">
+</head>
+
+<body>
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      fetch("navbar.html")
+        .then(response => response.text())
+        .then(data => {
+          document.body.insertAdjacentHTML("afterbegin", data);
+        });
+    });
+  </script>
+  <link rel="stylesheet" href="../css/navbar.css">
+
+  <div class="container mt-5">
+    <h1 class="text-center">Kontakt os</h1>
+    <p class="text-center">Har du spørgsmål? Udfyld formularen nedenfor, og vi vender tilbage hurtigst muligt.</p>
+
+    <form class="mt-4">
+      <div class="form-group">
+        <label for="name">Navn:</label>
+        <input type="text" id="name" class="form-control" placeholder="Indtast dit navn" required>
+      </div>
+      <div class="form-group">
+        <label for="email">Email:</label>
+        <input type="email" id="email" class="form-control" placeholder="Indtast din email" required>
+      </div>
+      <div class="form-group">
+        <label for="message">Besked:</label>
+        <textarea id="message" class="form-control" rows="5" placeholder="Skriv din besked her" required></textarea>
+      </div>
+      <button type="submit" class="btn btn-primary btn-block">Send besked</button>
+    </form>
+  </div>
+
+  <footer class="text-center mt-5">
+    <p>&copy; 2023 CaféGaming. Alle rettigheder forbeholdes.</p>
+  </footer>
+</body>
+
+</html>

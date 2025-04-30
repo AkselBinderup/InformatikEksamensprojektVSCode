@@ -5,248 +5,164 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>IT Udstyrsbooking</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 20px;
-      background-color: #f4f4f9;
-      color: #333;
-    }
 
-    .container {
-      max-width: 800px;
-      margin: 0 auto;
-      background: #fff;
-      padding: 20px;
-      border-radius: 8px;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    }
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/css/bootstrap.min.css"
+    integrity="sha384-r4NyP46KrjDleawBgD5tp8Y7UzmLA05oM1iAEQ17CSuDqnUK2+k9luXQOfXJCJ4I" crossorigin="anonymous">
 
-    h1 {
-      text-align: center;
-      color: #444;
-    }
-
-    .form-group {
-      margin-bottom: 20px;
-    }
-
-    label {
-      display: block;
-      margin-bottom: 5px;
-      font-weight: bold;
-    }
-
-    input[type="range"] {
-      width: 100%;
-    }
-
-    .slider-value {
-      text-align: center;
-      font-size: 18px;
-      margin-top: 10px;
-    }
-
-    .checkbox-group {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
-
-    .checkbox-group label {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    button {
-      width: 100%;
-      padding: 10px;
-      background: #007bff;
-      color: #fff;
-      border: none;
-      border-radius: 5px;
-      font-size: 16px;
-      cursor: pointer;
-      transition: background 0.3s;
-    }
-
-    button:hover {
-      background: #0056b3;
-    }
-
-    .result {
-      margin-top: 20px;
-      padding: 10px;
-      background-color: #f9f9f9;
-      border: 1px solid #ddd;
-      border-radius: 5px;
-    }
-
-    .dropdown {
-      margin-bottom: 20px;
-    }
-
-    .box {
-      border: 1px solid #ddd;
-      border-radius: 8px;
-      padding: 15px;
-      margin-bottom: 20px;
-      background-color: #f9f9f9;
-    }
-
-    .hidden {
-      display: none;
-    }
-  </style>
+  <!-- Custom Styles -->
+  <link rel="stylesheet" href="../css/bookingstyle.css">
 </head>
 
 <body>
-    
-  <div class="container">
-    <h1>IT Udstyrsbooking</h1>
-    <form id="bookingForm">
-      <div class="form-group">
-        <label for="numPeople">Antal personer:</label>
-        <input type="range" id="numPeople" name="numPeople" min="1" max="100" value="10" oninput="updateSliderValue('numPeople', 'sliderValuePeople')">
-        <div class="slider-value" id="sliderValuePeople">10</div>
-      </div>
+  <header>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        fetch("navbar.html")
+          .then(response => response.text())
+          .then(data => {
+            document.body.insertAdjacentHTML("afterbegin", data);
+          });
+      });
+    </script>
+    <link rel="stylesheet" href="../css/navbar.css">
+  </header>
 
-      <div class="form-group">
-        <label for="numPCs">Antal PC'er:</label>
-        <input type="range" id="numPCs" name="numPCs" min="1" max="100" value="10" oninput="updateSliderValue('numPCs', 'sliderValuePCs')">
-        <div class="slider-value" id="sliderValuePCs">10</div>
-      </div>
-
-      <div class="dropdown">
-        <label for="equipmentType">Vælg udstyrstype:</label>
-        <select id="equipmentType" onchange="toggleEquipmentView()">
-          <option value="pc">PC-udstyr</option>
-          <option value="network">Netværksudstyr</option>
-        </select>
-      </div>
-
-      <!-- PC-udstyr -->
-      <div id="pcEquipmentBox" class="box">
-        <h3>PC-udstyr</h3>
-        <div class="checkbox-group" id="pcEquipment">
-          <label><input type="checkbox" value="monitor" onchange="syncSelections()"> Skærme</label>
-          <label><input type="checkbox" value="keyboard" onchange="syncSelections()"> Tastaturer</label>
-          <label><input type="checkbox" value="mouse" onchange="syncSelections()"> Mus</label>
-          <label><input type="checkbox" value="headset" onchange="syncSelections()"> Headsets</label>
-          <label><input type="checkbox" value="extensionCord" onchange="syncSelections()"> Forlængerledninger</label>
+  <div class="container mt-5">
+    <div class="row">
+      <!-- Left Sidebar -->
+      <div class="col-md-4">
+        <div class="box">
+          <h3>Indstillinger</h3>
+          <form id="bookingForm">
+            <div class="form-group">
+              <label for="numPeople">Antal personer:</label>
+              <input type="range" id="numPeople" name="numPeople" min="1" max="100" value="10"
+                oninput="updateSliderValue('numPeople', 'sliderValuePeople')">
+              <div class="slider-value" id="sliderValuePeople">10</div>
+            </div>
+            <div class="form-group">
+              <label for="numPCs">Antal PC'er:</label>
+              <input type="range" id="numPCs" name="numPCs" min="1" max="100" value="10"
+                oninput="updateSliderValue('numPCs', 'sliderValuePCs')">
+              <div class="slider-value" id="sliderValuePCs">10</div>
+            </div>
+            <div class="form-group">
+              <label for="equipmentType">Vælg udstyrstype:</label>
+              <select id="equipmentType" class="form-control" onchange="updateGallery()">
+                <option value="pc">PC-udstyr</option>
+                <option value="network">Netværksudstyr</option>
+              </select>
+            </div>
+            <button type="button" class="btn btn-primary btn-block" onclick="calculateEstimate()">Beregn</button>
+          </form>
         </div>
       </div>
 
-      <!-- Netværksudstyr -->
-      <div id="networkEquipmentBox" class="box hidden">
-        <h3>Netværksudstyr</h3>
-        <div class="checkbox-group" id="networkEquipment">
-          <label><input type="checkbox" value="router" onchange="syncSelections()"> Router</label>
-          <label><input type="checkbox" value="switch" onchange="syncSelections()"> Netværksswitch</label>
-          <label><input type="checkbox" value="ethernet" onchange="syncSelections()"> Ethernetkabler</label>
-          <label><input type="checkbox" value="accessPoint" onchange="syncSelections()"> Access Point</label>
+      <!-- Main Content: Equipment Gallery -->
+      <div class="col-md-8">
+        <div class="box">
+          <h3>Vælg udstyr</h3>
+          <div class="gallery" id="equipmentGallery">
+            <!-- Gallery items will be dynamically updated -->
+          </div>
+        </div>
+        <!-- Estimate Section -->
+        <div id="result" class="result mt-4" style="display: none;">
+          <h3>Estimeret udstyr og omkostninger:</h3>
+          <p id="estimateText"></p>
         </div>
       </div>
-
-      <button type="button" onclick="calculateEstimate()">Beregn</button>
-    </form>
-    <div id="result" class="result" style="display: none;">
-      <h3>Estimeret udstyr og omkostninger:</h3>
-      <p id="estimateText"></p>
     </div>
   </div>
 
+  <script src="../js/booking.js"></script>
   <script>
+    // Equipment data
+    const equipmentData = {
+      pc: [
+        { id: 'mouse', name: 'Mus', image: '../images/mouse.png' },
+        { id: 'keyboard', name: 'Tastatur', image: '../images/keyboard.png' },
+        { id: 'headset', name: 'Headset', image: '../images/headphones.png' },
+        { id: 'extensionCord', name: 'Forlængerledning', image: '../images/ExtentionCable.png' }
+      ],
+      network: [
+        { id: 'router', name: 'Router', image: '../images/router.png' },
+        { id: 'switch', name: 'Netværksswitch', image: '../images/switch.png' },
+        { id: 'ethernet', name: 'Ethernetkabel', image: '../images/EthernetCable.png' },
+        { id: 'accessPoint', name: 'Access Point', image: '../images/accessPoint.png' }
+      ]
+    };
+
+    // Update the gallery based on the selected equipment type
+    function updateGallery() {
+      const equipmentType = document.getElementById('equipmentType').value;
+      const gallery = document.getElementById('equipmentGallery');
+      gallery.innerHTML = ''; // Clear the gallery
+
+      equipmentData[equipmentType].forEach(item => {
+        const galleryItem = document.createElement('div');
+        galleryItem.className = 'gallery-item';
+        galleryItem.onclick = () => toggleSelection(galleryItem, item.id);
+
+        galleryItem.innerHTML = `
+          <img src="${item.image}" alt="${item.name}">
+          <p>${item.name}</p>
+        `;
+
+        gallery.appendChild(galleryItem);
+      });
+    }
+
+    // Toggle selection of gallery items
+    function toggleSelection(element, value) {
+      element.classList.toggle('selected');
+      const selectedEquipment = document.getElementById('selectedEquipment') || [];
+      if (element.classList.contains('selected')) {
+        selectedEquipment.push(value);
+      } else {
+        const index = selectedEquipment.indexOf(value);
+        if (index > -1) selectedEquipment.splice(index, 1);
+      }
+    }
+
+    // Update slider value display
     function updateSliderValue(sliderId, displayId) {
       const slider = document.getElementById(sliderId);
       const sliderValue = document.getElementById(displayId);
       sliderValue.textContent = slider.value;
     }
 
-    function toggleEquipmentView() {
-      const selectedType = document.getElementById('equipmentType').value;
-      const pcBox = document.getElementById('pcEquipmentBox');
-      const networkBox = document.getElementById('networkEquipmentBox');
-
-      pcBox.classList.add('hidden');
-      networkBox.classList.add('hidden');
-
-      if (selectedType === 'pc') {
-        pcBox.classList.remove('hidden');
-      } else if (selectedType === 'network') {
-        networkBox.classList.remove('hidden');
-      }
-    }
-
+    // Calculate estimate
     function calculateEstimate() {
       const numPeople = parseInt(document.getElementById('numPeople').value);
       const numPCs = parseInt(document.getElementById('numPCs').value);
+      const selectedEquipment = Array.from(document.querySelectorAll('.gallery-item.selected'))
+        .map(item => item.querySelector('p').textContent);
 
-      // PC-udstyr
-      const pcCheckboxes = document.querySelectorAll('#pcEquipment input[type="checkbox"]');
-      const selectedPCEquipment = Array.from(pcCheckboxes)
-        .filter(checkbox => checkbox.checked)
-        .map(checkbox => checkbox.value);
-
-      // Netværksudstyr
-      const networkCheckboxes = document.querySelectorAll('#networkEquipment input[type="checkbox"]');
-      const selectedNetworkEquipment = Array.from(networkCheckboxes)
-        .filter(checkbox => checkbox.checked)
-        .map(checkbox => checkbox.value);
-
-      if (!numPeople || !numPCs || (selectedPCEquipment.length === 0 && selectedNetworkEquipment.length === 0)) {
+      if (!numPeople || !numPCs || selectedEquipment.length === 0) {
         alert('Vælg venligst antal personer, PC\'er og mindst ét udstyr.');
         return;
       }
 
       let estimate = `For ${numPeople} personer og ${numPCs} PC'er, skal du bruge:\n`;
+      selectedEquipment.forEach(item => {
+        estimate += `- ${item}\n`;
+      });
 
-      // PC-udstyr
-      if (selectedPCEquipment.includes('monitor')) {
-        estimate += `- ${numPCs} Skærme\n`;
-      }
-      if (selectedPCEquipment.includes('keyboard')) {
-        estimate += `- ${numPCs} Tastaturer\n`;
-      }
-      if (selectedPCEquipment.includes('mouse')) {
-        estimate += `- ${numPCs} Mus\n`;
-      }
-      if (selectedPCEquipment.includes('headset')) {
-        estimate += `- ${numPCs} Headsets\n`;
-      }
-      if (selectedPCEquipment.includes('extensionCord')) {
-        const cords = Math.ceil(numPeople / 5); // 1 forlængerledning pr. 5 personer
-        estimate += `- ${cords} Forlængerledninger\n`;
-      }
-
-      // Netværksudstyr
-      if (selectedNetworkEquipment.includes('router')) {
-        estimate += `- 1 Router\n`;
-      }
-      if (selectedNetworkEquipment.includes('switch')) {
-        const switches = Math.ceil(numPeople / 24); // 1 switch pr. 24 forbindelser
-        estimate += `- ${switches} Netværksswitch(es)\n`;
-      }
-      if (selectedNetworkEquipment.includes('ethernet')) {
-        estimate += `- ${numPeople} Ethernetkabler\n`;
-      }
-      if (selectedNetworkEquipment.includes('accessPoint')) {
-        const accessPoints = Math.ceil(numPeople / 15); // 1 access point pr. 15 forbindelser
-        estimate += `- ${accessPoints} Access Point(s)\n`;
-      }
-
-      // Båndbredde og omkostninger
-      const bandwidth = numPeople * 10; // 10 Mbps pr. person
+      const bandwidth = numPeople * 10; // 10 Mbps per person
       estimate += `\nInternetbåndbredde: ${bandwidth} Mbps\n`;
 
-      const costPerPC = 50; // Eksempelpris pr. PC
+      const costPerPC = 50; // Example cost per PC
       const totalCost = numPCs * costPerPC;
       estimate += `\nEstimerede omkostninger: $${totalCost}`;
 
       document.getElementById('estimateText').innerText = estimate;
       document.getElementById('result').style.display = 'block';
     }
+
+    // Initialize the gallery with PC equipment by default
+    document.addEventListener('DOMContentLoaded', updateGallery);
   </script>
 </body>
 

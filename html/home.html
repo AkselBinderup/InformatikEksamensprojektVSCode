@@ -10,9 +10,6 @@
   <title>Carousel Template · Bootstrap</title>
 <link rel="stylesheet" href="..//css/stylesheet.css"></link>
   <link rel="canonical" href="https://v5.getbootstrap.com/docs/5.0/examples/carousel/">
-
-
-
   <!-- Bootstrap core CSS -->
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/css/bootstrap.min.css"
     integrity="sha384-r4NyP46KrjDleawBgD5tp8Y7UzmLA05oM1iAEQ17CSuDqnUK2+k9luXQOfXJCJ4I" crossorigin="anonymous">
@@ -29,41 +26,16 @@
 </head>
 
 <body>
-
-  <header>
-    <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
-      <div class="container-fluid">
-        <a class="navbar-brand" href="#">CaféGaming</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse"
-          aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarCollapse">
-          <ul class="navbar-nav mr-auto mb-2 mb-md-0">
-            <li class="nav-item active">
-              <a class="nav-link" aria-current="page" href="#">Hjem</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">Lej udstyr</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">Se venuer</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#">Omkring os</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="#">Kontakt</a>
-              </li>
-          </ul>
-          <form class="d-flex">
-            <input class="form-control mr-2" type="search" placeholder="Søg" aria-label="Search">
-            <button class="btn btn-outline-success" type="submit">Søg</button>
-          </form>
-        </div>
-      </div>
-    </nav>
-  </header>
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      fetch("navbar.html")
+        .then(response => response.text())
+        .then(data => {
+          document.body.insertAdjacentHTML("afterbegin", data);
+        });
+    });
+  </script>
+  <link rel="stylesheet" href="../css/navbar.css">
 
   <main>
 
@@ -74,42 +46,38 @@
         <li data-target="#myCarousel" data-slide-to="2"></li>
       </ol>
       <div class="carousel-inner">
+        <!-- First Carousel Item -->
         <div class="carousel-item active">
-          <svg class="bd-placeholder-img" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg"
-            preserveAspectRatio="xMidYMid slice" role="img" focusable="false">
-            <rect width="100%" height="100%" fill="#777" /></svg>
-
+          <img src="..//images/Gray1.jpg" class="d-block w-100" alt="Lav en konto">
           <div class="container">
             <div class="carousel-caption text-left">
               <h1>Lav en konto</h1>
               <p>Begynd at oprette venuer, leje venuer og se vores udvalg af IT-udstyr til leje, ved at oprette dig i dag!</p>
-              <p><a class="btn btn-lg btn-primary" href="#" role="button">Opret dig i dag!</a></p>
+              <p><a class="btn btn-lg btn-primary" href="register.html" role="button">Opret dig i dag!</a></p>
             </div>
           </div>
         </div>
-        <div class="carousel-item">
-          <svg class="bd-placeholder-img" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg"
-            preserveAspectRatio="xMidYMid slice" role="img" focusable="false">
-            <rect width="100%" height="100%" fill="#777" /></svg>
 
+        <!-- Second Carousel Item -->
+        <div class="carousel-item">
+          <img src="..//images/Gray4.jpg" class="d-block w-100" alt="Lær mere om vores virksomhed">
           <div class="container">
             <div class="carousel-caption">
               <h1>Lær mere om vores virksomhed</h1>
               <p>Vores virksomhed begiver sig i udlejning af IT-udstyr, men vi har også en fyldig historie bag os.</p>
-              <p><a class="btn btn-lg btn-primary" href="#" role="button">Lær mere</a></p>
+              <p><a class="btn btn-lg btn-primary" href="omkringOs.html" role="button">Lær mere</a></p>
             </div>
           </div>
         </div>
-        <div class="carousel-item">
-          <svg class="bd-placeholder-img" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg"
-            preserveAspectRatio="xMidYMid slice" role="img" focusable="false">
-            <rect width="100%" height="100%" fill="#777" /></svg>
 
+        <!-- Third Carousel Item -->
+        <div class="carousel-item">
+          <img src="..//images/Gray3.jpg" class="d-block w-100" alt="Se vores venuer">
           <div class="container">
             <div class="carousel-caption text-right">
               <h1>Se vores venuer!</h1>
               <p>Vi har et bredt udvalg af IT-venuer. Hvis du er interesseret, kan du se vores galleri!</p>
-              <p><a class="btn btn-lg btn-primary" href="#" role="button">Se venuer!</a></p>
+              <p><a class="btn btn-lg btn-primary" href="venuer.html" role="button">Se venuer!</a></p>
             </div>
           </div>
         </div>
@@ -136,24 +104,9 @@
             <rect width="100%" height="100%" fill="#777" /><text x="50%" y="50%" fill="#777" dy=".3em">140x140</text>
           </svg>
 
-          <h2>Heading</h2>
-          <p>Donec sed odio dui. Etiam porta sem malesuada magna mollis euismod. Nullam id dolor id nibh ultricies
-            vehicula ut id elit. Morbi leo risus, porta ac consectetur ac, vestibulum at eros. Praesent commodo cursus
-            magna.</p>
-          <p><a class="btn btn-secondary" href="#" role="button">View details &raquo;</a></p>
-        </div><!-- /.col-lg-4 -->
-        <div class="col-lg-4">
-          <svg class="bd-placeholder-img rounded-circle" width="140" height="140" xmlns="http://www.w3.org/2000/svg"
-            aria-label="Placeholder: 140x140" preserveAspectRatio="xMidYMid slice" role="img" focusable="false">
-            <title>Placeholder</title>
-            <rect width="100%" height="100%" fill="#777" /><text x="50%" y="50%" fill="#777" dy=".3em">140x140</text>
-          </svg>
-
-          <h2>Heading</h2>
-          <p>Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit. Cras
-            mattis consectetur purus sit amet fermentum. Fusce dapibus, tellus ac cursus commodo, tortor mauris
-            condimentum nibh.</p>
-          <p><a class="btn btn-secondary" href="#" role="button">View details &raquo;</a></p>
+          <h2>header 1</h2>
+          <p>tekst</p>
+          <p><a class="btn btn-secondary" href="#" role="button">Se detaljer &raquo;</a></p>
         </div>
         <div class="col-lg-4">
           <svg class="bd-placeholder-img rounded-circle" width="140" height="140" xmlns="http://www.w3.org/2000/svg"
@@ -162,75 +115,25 @@
             <rect width="100%" height="100%" fill="#777" /><text x="50%" y="50%" fill="#777" dy=".3em">140x140</text>
           </svg>
 
-          <h2>Heading</h2>
-          <p>Donec sed odio dui. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Vestibulum id ligula porta
-            felis euismod semper. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum
-            massa justo sit amet risus.</p>
-          <p><a class="btn btn-secondary" href="#" role="button">View details &raquo;</a></p>
+          <h2>header 2</h2>
+          <p>tekst</p>
+          <p><a class="btn btn-secondary" href="#" role="button">Se detaljer &raquo;</a></p>
+        </div>
+        <div class="col-lg-4">
+          <svg class="bd-placeholder-img rounded-circle" width="140" height="140" xmlns="http://www.w3.org/2000/svg"
+            aria-label="Placeholder: 140x140" preserveAspectRatio="xMidYMid slice" role="img" focusable="false">
+            <title>Placeholder</title>
+            <rect width="100%" height="100%" fill="#777" /><text x="50%" y="50%" fill="#777" dy=".3em">140x140</text>
+          </svg>
+
+          <h2>header 3</h2>
+          <p>tekst</p>
+          <p><a class="btn btn-secondary" href="#" role="button">Se detaljer &raquo;</a></p>
         </div>
       </div>
 
 
       <!-- START THE FEATURETTES -->
-
-      <hr class="featurette-divider">
-
-      <div class="row featurette">
-        <div class="col-md-7">
-          <h2 class="featurette-heading">Udlejning af LAN-udstyr <span class="text-muted">- bedste priser på markedet!</span>
-          </h2>
-          <p class="lead">Tekst omkring udlejning af LAN-udstyr</p>
-        </div>
-        <div class="col-md-5">
-          <svg class="bd-placeholder-img bd-placeholder-img-lg featurette-image img-fluid mx-auto" width="500"
-            height="500" xmlns="http://www.w3.org/2000/svg" aria-label="Placeholder: 500x500"
-            preserveAspectRatio="xMidYMid slice" role="img" focusable="false">
-            <title>Placeholder</title>
-            <rect width="100%" height="100%" fill="#eee" /><text x="50%" y="50%" fill="#aaa" dy=".3em">500x500</text>
-          </svg>
-
-        </div>
-      </div>
-
-      <hr class="featurette-divider">
-
-      <div class="row featurette">
-        <div class="col-md-7 order-md-2">
-          <h2 class="featurette-heading">Oh yeah, it’s that good. <span class="text-muted">See for yourself.</span></h2>
-          <p class="lead">Donec ullamcorper nulla non metus auctor fringilla. Vestibulum id ligula porta felis euismod
-            semper. Praesent commodo cursus magna, vel scelerisque nisl consectetur. Fusce dapibus, tellus ac cursus
-            commodo.</p>
-        </div>
-        <div class="col-md-5 order-md-1">
-          <svg class="bd-placeholder-img bd-placeholder-img-lg featurette-image img-fluid mx-auto" width="500"
-            height="500" xmlns="http://www.w3.org/2000/svg" aria-label="Placeholder: 500x500"
-            preserveAspectRatio="xMidYMid slice" role="img" focusable="false">
-            <title>Placeholder</title>
-            <rect width="100%" height="100%" fill="#eee" /><text x="50%" y="50%" fill="#aaa" dy=".3em">500x500</text>
-          </svg>
-
-        </div>
-      </div>
-
-      <hr class="featurette-divider">
-
-      <div class="row featurette">
-        <div class="col-md-7">
-          <h2 class="featurette-heading">And lastly, this one. <span class="text-muted">Checkmate.</span></h2>
-          <p class="lead">Donec ullamcorper nulla non metus auctor fringilla. Vestibulum id ligula porta felis euismod
-            semper. Praesent commodo cursus magna, vel scelerisque nisl consectetur. Fusce dapibus, tellus ac cursus
-            commodo.</p>
-        </div>
-        <div class="col-md-5">
-          <svg class="bd-placeholder-img bd-placeholder-img-lg featurette-image img-fluid mx-auto" width="500"
-            height="500" xmlns="http://www.w3.org/2000/svg" aria-label="Placeholder: 500x500"
-            preserveAspectRatio="xMidYMid slice" role="img" focusable="false">
-            <title>Placeholder</title>
-            <rect width="100%" height="100%" fill="#eee"/><text x="50%" y="50%" fill="#aaa" dy=".3em">500x500</text>
-          </svg>
-
-        </div>
-      </div>
 
       <hr class="featurette-divider">
 

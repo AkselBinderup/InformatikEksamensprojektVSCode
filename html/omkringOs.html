@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="da">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Omkring os</title>
+
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/css/bootstrap.min.css"
+  integrity="sha384-r4NyP46KrjDleawBgD5tp8Y7UzmLA05oM1iAEQ17CSuDqnUK2+k9luXQOfXJCJ4I" crossorigin="anonymous">
+
+<!-- Custom Stylesheets -->
+<!-- <link rel="stylesheet" href="../css/stylesheet.css"> -->
+<link rel="stylesheet" href="../css/bookingstyle.css">
+</head>
+
+<body>
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      fetch("navbar.html")
+        .then(response => response.text())
+        .then(data => {
+          document.body.insertAdjacentHTML("afterbegin", data);
+        });
+    });
+  </script>
+  <link rel="stylesheet" href="../css/navbar.css">
+
+  <div class="container mt-5">
+    <h1 class="text-center">Omkring os</h1>
+    <p class="text-center">
+      Velkommen til CaféGaming! Vi er dedikerede til at skabe en fantastisk oplevelse for gamere og teknikentusiaster.
+    </p>
+    <p>
+      Bla bla cafegaming
+    </p>
+    <p>
+     Mere cafegaming snak
+    </p>
+    <p> 
+        bla 
+
+    </p>
+  </div>
+
+  <footer class="text-center mt-5">
+    <p>&copy; 2023 CaféGaming. Alle rettigheder forbeholdes.</p>
+  </footer>
+</body>
+
+</html>

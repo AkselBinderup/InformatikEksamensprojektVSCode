@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="da">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login</title>
+   <!-- Bootstrap CSS -->
+   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/css/bootstrap.min.css"
+   integrity="sha384-r4NyP46KrjDleawBgD5tp8Y7UzmLA05oM1iAEQ17CSuDqnUK2+k9luXQOfXJCJ4I" crossorigin="anonymous">
+
+ <!-- Custom Stylesheets -->
+ <!-- <link rel="stylesheet" href="../css/stylesheet.css"> -->
+ <link rel="stylesheet" href="../css/bookingstyle.css">
+</head>
+
+<body>
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      fetch("navbar.html")
+        .then(response => response.text())
+        .then(data => {
+          document.body.insertAdjacentHTML("afterbegin", data);
+        });
+    });
+  </script>
+  <link rel="stylesheet" href="../css/navbar.css">
+    
+
+  <div class="container mt-5">
+    <h1 class="text-center">Login</h1>
+    <form class="mt-4">
+      <div class="form-group">
+        <label for="username">Brugernavn:</label>
+        <input type="text" id="username" class="form-control" placeholder="Indtast dit brugernavn" required>
+      </div>
+      <div class="form-group">
+        <label for="password">Adgangskode:</label>
+        <input type="password" id="password" class="form-control" placeholder="Indtast din adgangskode" required>
+      </div>
+      <div class="form-group">
+        <label for="technicalLevel">Teknisk niveau:</label>
+        <select id="technicalLevel" class="form-control">
+          <option value="beginner">Begynder</option>
+          <option value="advanced">Avanceret</option>
+        </select>
+      </div>
+      <button type="submit" class="btn btn-primary btn-block">Login</button>
+      <p class="text-center mt-3">
+        Har du ikke en konto? <a href="register.html">Registrer her</a>
+      </p>
+    </form>
+  </div>
+
+  <script>
+  </script>
+</body>
+
+</html>
