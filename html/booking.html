@@ -29,7 +29,7 @@
   </header>
 
   <div class="container mt-5">
-    <p> .</p>
+    <p>.</p>
     <div class="row">
       <!-- Left Sidebar -->
       <div class="col-md-4">
@@ -48,30 +48,30 @@
                 oninput="updateSliderValue('numPCs', 'sliderValuePCs')">
               <div class="slider-value" id="sliderValuePCs">10</div>
             </div>
-            <div class="form-group">
-              <label for="equipmentType">Vælg udstyrstype:</label>
-              <select id="equipmentType" class="form-control" onchange="updateGallery()">
-                <option value="pc">PC-udstyr</option>
-                <option value="network">Netværksudstyr</option>
-              </select>
-            </div>
             <button type="button" class="btn btn-primary btn-block" onclick="calculateEstimate()">Beregn</button>
+
           </form>
+        </div>
+        <!-- Estimated Price Section -->
+        <div class="box mt-3">
+          <h5>Estimeret Omkostninger:</h5>
+          <p id="totalEstimate">Samlet pris: 0 DKK</p>
         </div>
       </div>
 
       <!-- Main Content: Equipment Gallery -->
       <div class="col-md-8">
         <div class="box">
-          <h3>Vælg udstyr</h3>
-          <div class="gallery" id="equipmentGallery">
-            <!-- Gallery items will be dynamically updated -->
+          <h3>PC Udstyr</h3>
+          <div class="gallery" id="pcEquipmentGallery">
+            <!-- PC Equipment items will be dynamically updated -->
           </div>
         </div>
-        <!-- Estimate Section -->
-        <div id="result" class="result mt-4" style="display: none;">
-          <h3>Estimeret udstyr og omkostninger:</h3>
-          <p id="estimateText"></p>
+        <div class="box">
+          <h3>Netværksudstyr</h3>
+          <div class="gallery" id="networkEquipmentGallery">
+            <!-- Network Equipment items will be dynamically updated -->
+          </div>
         </div>
       </div>
     </div>
@@ -82,88 +82,127 @@
     // Equipment data
     const equipmentData = {
       pc: [
-        { id: 'mouse', name: 'Mus', image: '../images/mouse.png' },
-        { id: 'keyboard', name: 'Tastatur', image: '../images/keyboard.png' },
-        { id: 'headset', name: 'Headset', image: '../images/headphones.png' },
-        { id: 'extensionCord', name: 'Forlængerledning', image: '../images/ExtentionCable.png' }
+        { id: 'mouse', name: 'Mus', image: '../images/mouse.png', price: 50, info: 'En mus til gaming.' },
+        { id: 'keyboard', name: 'Tastatur', image: '../images/keyboard.png', price: 100, info: 'Et mekanisk tastatur.' },
+        { id: 'headset', name: 'Headset', image: '../images/headphones.png', price: 75, info: 'Et headset med mikrofon.' },
+        { id: 'extensionCord', name: 'Forlængerledning', image: '../images/ExtentionCable.png', price: 25, info: 'En 5 meter forlængerledning.' }
       ],
       network: [
-        { id: 'router', name: 'Router', image: '../images/router.png' },
-        { id: 'switch', name: 'Netværksswitch', image: '../images/switch.png' },
-        { id: 'ethernet', name: 'Ethernetkabel', image: '../images/EthernetCable.png' },
-        { id: 'accessPoint', name: 'Access Point', image: '../images/accessPoint.png' }
+        { id: 'router', name: 'Router', image: '../images/router.png', price: 200, info: 'En trådløs router.' },
+        { id: 'switch', name: 'Netværksswitch', image: '../images/switch.png', price: 150, info: 'En switch til netværk.' },
+        { id: 'ethernet', name: 'Ethernetkabel', image: '../images/EthernetCable.png', price: 10, info: 'Et 10 meter ethernetkabel.' },
+        { id: 'accessPoint', name: 'Access Point', image: '../images/accessPoint.png', price: 100, info: 'Et trådløst access point.' }
       ]
     };
-
-    // Update the gallery based on the selected equipment type
-    function updateGallery() {
-      const equipmentType = document.getElementById('equipmentType').value;
-      const gallery = document.getElementById('equipmentGallery');
+  
+    // Selected equipment
+    const selectedEquipment = [];
+  
+    // Update the PC and Network galleries
+    function updateGalleries() {
+      updateGallery('pc', 'pcEquipmentGallery');
+      updateGallery('network', 'networkEquipmentGallery');
+    }
+  
+    // Update a specific gallery
+    function updateGallery(type, galleryId) {
+      const gallery = document.getElementById(galleryId);
       gallery.innerHTML = ''; // Clear the gallery
-
-      equipmentData[equipmentType].forEach(item => {
+  
+      equipmentData[type].forEach(item => {
         const galleryItem = document.createElement('div');
         galleryItem.className = 'gallery-item';
-        galleryItem.onclick = () => toggleSelection(galleryItem, item.id);
-
+        galleryItem.onclick = () => toggleSelection(galleryItem, item);
+  
+        // Check if the item is already selected
+        if (selectedEquipment.some(e => e.id === item.id)) {
+          galleryItem.classList.add('selected');
+        }
+  
         galleryItem.innerHTML = `
           <img src="${item.image}" alt="${item.name}">
-          <p>${item.name}</p>
+          <p>${item.name} - ${item.price} DKK</p>
+          <small>${item.info}</small>
         `;
-
+  
         gallery.appendChild(galleryItem);
       });
     }
-
+  
     // Toggle selection of gallery items
-    function toggleSelection(element, value) {
+    function toggleSelection(element, item) {
       element.classList.toggle('selected');
-      const selectedEquipment = document.getElementById('selectedEquipment') || [];
       if (element.classList.contains('selected')) {
-        selectedEquipment.push(value);
+        selectedEquipment.push(item);
       } else {
-        const index = selectedEquipment.indexOf(value);
+        const index = selectedEquipment.findIndex(e => e.id === item.id);
         if (index > -1) selectedEquipment.splice(index, 1);
       }
+      calculateEstimate();
     }
-
+  
+    // Calculate estimate
+    function calculateEstimate() {
+      const numPeople = parseInt(document.getElementById('numPeople').value);
+      const numPCs = parseInt(document.getElementById('numPCs').value);
+  
+      // Calculate equipment cost
+      const equipmentCost = selectedEquipment.reduce((sum, item) => sum + item.price, 0);
+  
+      // Add cost based on number of people and PCs
+      const peopleCost = numPeople * 10; // Example: 10 DKK per person
+      const pcCost = numPCs * 50; // Example: 50 DKK per PC
+  
+      const totalCost = equipmentCost + peopleCost + pcCost;
+  
+      // Generate recommended amounts
+      const recommendations = selectedEquipment.map(item => {
+        let recommendedAmount = 0;
+  
+        // Example logic for recommendations
+        if (item.id === 'mouse' || item.id === 'keyboard' || item.id === 'headset') {
+          recommendedAmount = numPCs; // One per PC
+        } else if (item.id === 'extensionCord') {
+          recommendedAmount = Math.ceil(numPeople / 5); // One per 5 people
+        } else if (item.id === 'router') {
+          recommendedAmount = 1; // One router per event
+        } else if (item.id === 'switch') {
+          recommendedAmount = Math.ceil(numPeople / 24); // One switch per 24 people
+        } else if (item.id === 'ethernet') {
+          recommendedAmount = numPeople; // One cable per person
+        } else if (item.id === 'accessPoint') {
+          recommendedAmount = Math.ceil(numPeople / 15); // One access point per 15 people
+        }
+  
+        return `${item.name}: ${recommendedAmount} stk.`;
+      });
+  
+      // Update the estimate section
+      const estimateText = `
+        <h5>Valgte Udstyr:</h5>
+        <ul>
+          ${selectedEquipment.map(item => `<li>${item.name} - ${item.price} DKK</li>`).join('')}
+        </ul>
+        <h5>Anbefalet Mængde:</h5>
+        <ul>
+          ${recommendations.map(rec => `<li>${rec}</li>`).join('')}
+        </ul>
+        <h5>Samlet Pris:</h5>
+        <p>${totalCost} DKK</p>
+      `;
+  
+      document.getElementById('totalEstimate').innerHTML = estimateText;
+    }
+  
     // Update slider value display
     function updateSliderValue(sliderId, displayId) {
       const slider = document.getElementById(sliderId);
       const sliderValue = document.getElementById(displayId);
       sliderValue.textContent = slider.value;
     }
-
-    // Calculate estimate
-    function calculateEstimate() {
-      const numPeople = parseInt(document.getElementById('numPeople').value);
-      const numPCs = parseInt(document.getElementById('numPCs').value);
-      const selectedEquipment = Array.from(document.querySelectorAll('.gallery-item.selected'))
-        .map(item => item.querySelector('p').textContent);
-
-      if (!numPeople || !numPCs || selectedEquipment.length === 0) {
-        alert('Vælg venligst antal personer, PC\'er og mindst ét udstyr.');
-        return;
-      }
-
-      let estimate = `For ${numPeople} personer og ${numPCs} PC'er, skal du bruge:\n`;
-      selectedEquipment.forEach(item => {
-        estimate += `- ${item}\n`;
-      });
-
-      const bandwidth = numPeople * 10; // 10 Mbps per person
-      estimate += `\nInternetbåndbredde: ${bandwidth} Mbps\n`;
-
-      const costPerPC = 50; // Example cost per PC
-      const totalCost = numPCs * costPerPC;
-      estimate += `\nEstimerede omkostninger: $${totalCost}`;
-
-      document.getElementById('estimateText').innerText = estimate;
-      document.getElementById('result').style.display = 'block';
-    }
-
-    // Initialize the gallery with PC equipment by default
-    document.addEventListener('DOMContentLoaded', updateGallery);
+  
+    // Initialize the galleries
+    document.addEventListener('DOMContentLoaded', updateGalleries);
   </script>
 </body>
 
