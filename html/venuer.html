@@ -12,6 +12,7 @@
 
   <!-- Custom Styles -->
   <link rel="stylesheet" href="../css/stylesheet.css">
+  <link rel="stylesheet" href="../css/bookingstyle.css">
 </head>
 
 <body>
@@ -48,6 +49,29 @@
               <label for="venueCapacity">Kapacitet:</label>
               <input type="number" id="venueCapacity" class="form-control" placeholder="Indtast kapacitet" required>
             </div>
+            <div class="form-group">
+              <label for="numPeople">Antal personer:</label>
+              <input type="range" id="numPeople" name="numPeople" min="1" max="100" value="10"
+                oninput="updateSliderValue('numPeople', 'sliderValuePeople')">
+              <div class="slider-value" id="sliderValuePeople">10</div>
+            </div>
+            <div class="form-group">
+              <label for="equipmentType">Vælg udstyrstype:</label>
+              <select id="equipmentType" class="form-control" onchange="updateGallery()">
+                <option value="pc">PC-udstyr</option>
+                <option value="network">Netværksudstyr</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <h5>Vælg udstyr:</h5>
+              <div class="gallery" id="equipmentGallery">
+                <!-- Gallery items will be dynamically updated -->
+              </div>
+            </div>
+            <div class="form-group">
+              <h5>Estimeret Omkostninger:</h5>
+              <p id="estimateText">0 DKK</p>
+            </div>
             <button type="button" class="btn btn-success btn-block" onclick="addVenue()">Gem Venue</button>
           </form>
         </div>
@@ -70,6 +94,68 @@
   </footer>
 
   <script>
+    // Equipment data
+    const equipmentData = {
+      pc: [
+        { id: 'mouse', name: 'Mus', image: '../images/mouse.png', price: 50 },
+        { id: 'keyboard', name: 'Tastatur', image: '../images/keyboard.png', price: 100 },
+        { id: 'headset', name: 'Headset', image: '../images/headphones.png', price: 75 },
+        { id: 'extensionCord', name: 'Forlængerledning', image: '../images/ExtentionCable.png', price: 25 }
+      ],
+      network: [
+        { id: 'router', name: 'Router', image: '../images/router.png', price: 200 },
+        { id: 'switch', name: 'Netværksswitch', image: '../images/switch.png', price: 150 },
+        { id: 'ethernet', name: 'Ethernetkabel', image: '../images/EthernetCable.png', price: 10 },
+        { id: 'accessPoint', name: 'Access Point', image: '../images/accessPoint.png', price: 100 }
+      ]
+    };
+
+    // Selected equipment
+    const selectedEquipment = [];
+
+    // Update the gallery based on the selected equipment type
+    function updateGallery() {
+      const equipmentType = document.getElementById('equipmentType').value;
+      const gallery = document.getElementById('equipmentGallery');
+      gallery.innerHTML = ''; // Clear the gallery
+
+      equipmentData[equipmentType].forEach(item => {
+        const galleryItem = document.createElement('div');
+        galleryItem.className = 'gallery-item';
+        galleryItem.onclick = () => toggleSelection(galleryItem, item);
+
+        // Check if the item is already selected
+        if (selectedEquipment.some(e => e.id === item.id)) {
+          galleryItem.classList.add('selected');
+        }
+
+        galleryItem.innerHTML = `
+          <img src="${item.image}" alt="${item.name}">
+          <p>${item.name} - ${item.price} DKK</p>
+        `;
+
+        gallery.appendChild(galleryItem);
+      });
+    }
+
+    // Toggle selection of gallery items
+    function toggleSelection(element, item) {
+      element.classList.toggle('selected');
+      if (element.classList.contains('selected')) {
+        selectedEquipment.push(item);
+      } else {
+        const index = selectedEquipment.findIndex(e => e.id === item.id);
+        if (index > -1) selectedEquipment.splice(index, 1);
+      }
+      calculateEstimate();
+    }
+
+    // Calculate estimate
+    function calculateEstimate() {
+      const totalCost = selectedEquipment.reduce((sum, item) => sum + item.price, 0);
+      document.getElementById('estimateText').innerText = `${totalCost} DKK`;
+    }
+
     // Function to toggle the visibility of the venue creation form
     function toggleVenueForm() {
       const venueForm = document.getElementById('venueForm');
@@ -86,67 +172,39 @@
         const venueList = document.getElementById('venueList');
         const listItem = document.createElement('li');
         listItem.className = 'list-group-item d-flex justify-content-between align-items-center';
+        listItem.onclick = () => viewVenueDetails(venueName, venueLocation, venueCapacity);
 
         // Venue details
         const venueDetails = document.createElement('span');
         venueDetails.textContent = `${venueName} - ${venueLocation} (Kapacitet: ${venueCapacity})`;
         listItem.appendChild(venueDetails);
 
-        // Edit button
-        const editButton = document.createElement('button');
-        editButton.className = 'btn btn-sm btn-warning me-2';
-        editButton.textContent = 'Rediger';
-        editButton.onclick = () => editVenue(listItem, venueDetails);
-        listItem.appendChild(editButton);
-
-        // Delete button
-        const deleteButton = document.createElement('button');
-        deleteButton.className = 'btn btn-sm btn-danger';
-        deleteButton.textContent = 'Slet';
-        deleteButton.onclick = () => deleteVenue(listItem);
-        listItem.appendChild(deleteButton);
-
         venueList.appendChild(listItem);
 
-        // Clear the form fields and hide the form
+        // Clear the form fields and reset selections
         document.getElementById('venueForm').reset();
+        selectedEquipment.length = 0;
+        calculateEstimate();
         toggleVenueForm();
       } else {
         alert('Udfyld venligst alle felter for at oprette en venue.');
       }
     }
 
-    // Function to delete a venue
-    function deleteVenue(listItem) {
-      if (confirm('Er du sikker på, at du vil slette denne venue?')) {
-        listItem.remove();
-      }
+    // View venue details
+    function viewVenueDetails(name, location, capacity) {
+      alert(`Venue: ${name}\nPlacering: ${location}\nKapacitet: ${capacity}\nUdstyr:\n${selectedEquipment.map(e => `${e.name} (${e.price} DKK)`).join('\n')}`);
     }
 
-    // Function to edit a venue
-    function editVenue(listItem, venueDetails) {
-      const [name, locationAndCapacity] = venueDetails.textContent.split(' - ');
-      const [location, capacity] = locationAndCapacity.replace('Kapacitet: ', '').split(' (');
-
-      // Populate the form with the current venue details
-      document.getElementById('venueName').value = name;
-      document.getElementById('venueLocation').value = location;
-      document.getElementById('venueCapacity').value = capacity.replace(')', '');
-
-      // Show the form
-      toggleVenueForm();
-
-      // Update the venue on form submission
-      const saveButton = document.querySelector('#venueForm button');
-      saveButton.textContent = 'Gem Ændringer';
-      saveButton.onclick = () => {
-        venueDetails.textContent = `${document.getElementById('venueName').value} - ${document.getElementById('venueLocation').value} (Kapacitet: ${document.getElementById('venueCapacity').value})`;
-        saveButton.textContent = 'Gem Venue';
-        saveButton.onclick = addVenue; // Reset the button to its original functionality
-        document.getElementById('venueForm').reset();
-        toggleVenueForm();
-      };
+    // Update slider value display
+    function updateSliderValue(sliderId, displayId) {
+      const slider = document.getElementById(sliderId);
+      const sliderValue = document.getElementById(displayId);
+      sliderValue.textContent = slider.value;
     }
+
+    // Initialize the gallery with PC equipment by default
+    document.addEventListener('DOMContentLoaded', updateGallery);
   </script>
 </body>
 
